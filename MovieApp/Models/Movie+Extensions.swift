@@ -10,6 +10,19 @@ import CoreData
 
 extension Movie: BaseModel {
     
+    static func byReleaseDate(releaseDate: Date) -> [Movie] {
+        
+        let request: NSFetchRequest<Movie> = Movie.fetchRequest()
+        request.predicate = NSPredicate(format: "%K >= %@", #keyPath(Movie.releaseDate), releaseDate as NSDate)  // Core Data Format
+        
+        do {
+            return try viewContext.fetch(request)
+        } catch {
+            return []
+        }
+        
+    }
+    
     static func byActorName(name: String) -> [Movie] {
         
         let request: NSFetchRequest<Movie> = Movie.fetchRequest()
